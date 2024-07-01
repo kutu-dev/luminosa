@@ -1,0 +1,95 @@
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+:root {
+  --text: #e4f2e8;
+  --background: #08110b;
+  --primary: #b0d8be;
+  --secondary: #0c1810;
+  --accent: #4fa16a;
+}
+
+html {
+  box-sizing: border-box;
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+}
+
+body,
+html {
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+}
+
+body {
+    background: linear-gradient(45deg, var(--background), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-code {
+  padding: 1svw;
+}
+
+.error-code__number {
+    width: 100%;
+    height: 1em;
+    text-align: center;
+    font-size: 20svw;
+    line-height: 1em;
+}
+
+.error-code__message {
+  width: 100%;
+  text-align: center;
+  font-size: 1svw;
+}
+
+.error-code__message a {
+  color: var(--primary);
+  padding-inline: 0.2em;
+  line-height: 1.5em;
+}
+
+.error-code__message a:hover {
+  color: var(--secondary);
+  background-color: var(--accent);
+}
+
+@media (max-width: 1500px) {
+  .error-code__number {
+    font-size: 25svw;
+  }
+
+  .error-code__message {
+    font-size: 1.5svw;
+  }
+}
+
+@media (max-width: 1200px) {
+  .error-code__number {
+    font-size: 25svw;
+  }
+
+  .error-code__message {
+    font-size: 3svw;
+  }
+}
+
+@media (max-width: 700px) {
+  .error-code__number {
+    font-size: 40svw;
+  }
+
+  .error-code__message {
+    font-size: 5svw;
+  }
+}

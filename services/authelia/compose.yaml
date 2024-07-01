@@ -1,0 +1,113 @@
+services:
+  authelia:
+    image: authelia/authelia
+    container_name: authelia
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    expose:
+      - 9091
+    volumes:
+      - ./config:/config:ro
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.authelia.rule=Host("authelia.dobon.dev")
+    environment:
+      - TZ=Europe/Madrid
+      - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE=/run/secrets/authelia_jwt_secret
+      - AUTHELIA_SESSION_SECRET_FILE=/run/secrets/authelia_session_secret
+      - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/run/secrets/storage_encryption_key
+      - AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE=/run/secrets/storage_postgres_password
+      - AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE=/run/secrets/authelia_notifier_smtp_password
+      - AUTHELIA_SESSION_REDIS_PASSWORD_FILE=/run/secrets/authelia_session_redis_password
+      - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE=/run/secrets/authelia_authentication_backend_ldap_password
+      - AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE=/run/secrets/authelia_identity_providers_oidc_hmac_secret
+
+      # Experimental, maybe in the future the `X_` prefix will be removed?
+      - X_AUTHELIA_CONFIG_FILTERS=template
+    secrets:
+      - authelia_jwt_secret
+      - authelia_session_secret
+      - storage_encryption_key
+      - storage_postgres_password
+      - authelia_notifier_smtp_password
+      - authelia_session_redis_password
+      - authelia_authentication_backend_ldap_password
+      - authelia_identity_providers_oidc_hmac_secret
+      - authelia_identity_providers_oidc_jwks_key
+    depends_on:
+      - authelia-postgres
+      - authelia-redis
+
+  authelia-postgres:
+    image: postgres
+    container_name: authelia-postgres
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    expose:
+      - 5432
+    volumes:
+      - /srv/sync/authelia/postgres:/var/lib/postgresql/data
+    networks:
+      - shared
+    environment:
+      - POSTGRES_USER=authelia
+      - POSTGRES_PASSWORD_FILE=/run/secrets/storage_postgres_password
+      - POSTGRES_DB=storage
+    secrets:
+      - storage_postgres_password
+
+  authelia-redis:
+    image: redis:alpine
+    container_name: authelia-redis
+    command:
+      [
+        "sh",
+        "-c",
+        'docker-entrypoint.sh --requirepass "$$(cat $$REDIS_PASSWORD_FILE)"',
+      ]
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    expose:
+      - 6379
+    volumes:
+      - /srv/sync/authelia/redis:/data
+    networks:
+      - shared
+    environment:
+      - TZ=Europe/Madrid
+      - REDIS_PASSWORD_FILE=/run/secrets/authelia_session_redis_password
+    secrets:
+      - authelia_session_redis_password
+
+secrets:
+  authelia_jwt_secret:
+    file: ./secrets/authelia_jwt_secret.txt
+  authelia_session_secret:
+    file: ./secrets/authelia_session_secret.txt
+  storage_encryption_key:
+    file: ./secrets/storage_encryption_key.txt
+  storage_postgres_password:
+    file: ./secrets/storage_postgres_password.txt
+  authelia_notifier_smtp_password:
+    file: ./secrets/authelia_notifier_smtp_password.txt
+  authelia_session_redis_password:
+    file: ./secrets/authelia_session_redis_password.txt
+  authelia_authentication_backend_ldap_password:
+    file: ./secrets/authelia_authentication_backend_ldap_password.txt
+  authelia_identity_providers_oidc_hmac_secret:
+    file: ./secrets/authelia_identity_providers_oidc_hmac_secret.txt
+  authelia_identity_providers_oidc_jwks_key:
+    file: ./secrets/authelia_identity_providers_oidc_jwks_key.txt
+
+networks:
+  shared:
+    name: shared
+    external: true

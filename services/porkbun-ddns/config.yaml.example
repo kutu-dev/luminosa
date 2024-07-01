@@ -1,0 +1,15 @@
+update_interval_minutes: 5
+
+credentials:
+  prod:
+    porkbun_api_key: # <Porkbun API key 1>
+    porkbun_secret_key: # <Porkbun secret API key 1>
+
+records:
+  - domain: # Your domain name
+    host: "*"
+    ipv4: true
+    credentials: prod
+
+metrics:
+  enabled: false

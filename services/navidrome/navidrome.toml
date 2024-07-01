@@ -1,0 +1,2 @@
+ReverseProxyWhitelist="10.8.1.0/24"
+EnableSharing=true

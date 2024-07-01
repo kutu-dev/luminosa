@@ -1,0 +1,30 @@
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+
+    [entryPoints.web.http.redirections.entryPoint]
+      to = "websecure"
+      scheme = "https"
+
+  [entryPoints.websecure]
+    address = ":443"
+
+    [entryPoints.websecure.http.tls]
+      certresolver="le"
+
+      [[entryPoints.websecure.http.tls.domains]]
+        main="dobon.dev"
+        sans="*.dobon.dev"
+
+[certificatesResolvers.le.acme]
+  email = "the.kutu.dev@gmail.com"
+  storage = "acme.json"
+  [certificatesResolvers.le.acme.dnsChallenge]
+    provider = "porkbun"
+    delayBeforeCheck = 0
+
+[providers.docker]
+  exposedByDefault = false
+
+[api]
+  dashboard = true

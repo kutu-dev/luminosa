@@ -1,0 +1,18 @@
+services:
+  porkbun-ddns:
+    image: ghcr.io/jadolg/porkbun-ddns
+    container_name: porkbun-ddns
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    volumes:
+      - ./config.yaml:/config.yaml:ro
+
+    networks:
+      - shared
+
+networks:
+  shared:
+    name: shared
+    external: true

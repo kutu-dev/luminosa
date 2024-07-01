@@ -1,0 +1,34 @@
+version: "3.3"
+
+services:
+  ntfy:
+    image: binwiederhier/ntfy
+    command:
+      - serve
+    restart: unless-stopped
+    user: "0"
+    expose:
+      - 80
+    volumes:
+      - ./server.yml:/etc/ntfy/server.yml:ro
+      - /srv/sync/ntfy/user.db:/var/lib/ntfy/user.db
+      - /srv/sync/ntfy/cache:/var/cache/ntfy
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.ntfy.rule=Host("ntfy.v.dobon.dev")
+
+      - traefik.http.routers.ntfy.tls=true
+      - traefik.http.routers.ntfy.tls.certresolver=le
+      - traefik.http.routers.ntfy.tls.domains[0].main=v.dobon.dev
+      - traefik.http.routers.ntfy.tls.domains[0].sans=*.v.dobon.dev
+    environment:
+      - TZ=Europe/Madrid
+      - WEB_PUSH_PUBLIC_KEY={$WEB_PUSH_PUBLIC_KEY}
+      - WEB_PUSH_PRIVATE_KEY={$WEB_PUSH_PRIVATE_KEY}
+
+networks:
+  shared:
+    name: shared
+    external: true

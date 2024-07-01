@@ -1,0 +1,17 @@
+services:
+  homer:
+    image: b4bz/homer
+    container_name: homer
+    restart: unless-stopped
+    user: "1"
+    expose:
+      - 8080
+    volumes:
+      - ./assets/:/www/assets:ro
+    networks:
+      - shared
+
+networks:
+  shared:
+    name: shared
+    external: true

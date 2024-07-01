@@ -1,0 +1,103 @@
+theme: dark
+
+log:
+  level: 'debug'
+
+authentication_backend:
+  ldap:
+    implementation: lldap
+    address: ldap://lldap:3890
+    base_dn: dc=dobon,dc=dev
+    user: uid=authelia,ou=people,dc=dobon,dc=dev
+
+storage:
+  postgres:
+    address: authelia-postgres:5432
+    database: storage
+    username: authelia
+
+session:
+  name: authelia_session
+  expiration: 1h
+  inactivity: 5m
+  remember_me: 1M
+
+  cookies:
+    - domain: dobon.dev
+      authelia_url: https://authelia.dobon.dev
+      default_redirection_url: https://home.dobon.dev
+
+  redis:
+    host: authelia-redis
+    port: 6379
+
+notifier:
+  smtp:
+    address: smtp.gmail.com:25
+    timeout: 5s
+    username: the.kutu.dev@gmail.com
+    sender: "Authelia <the.kutu.dev@gmail.com>"
+    identifier: localhost
+    subject: "Luminosa: {title}"
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain:
+        - navidrome.dobon.dev
+      policy: two_factor
+
+    - domain:
+        - traefik.v.dobon.dev
+        - pihole.v.dobon.dev
+        - lldap.v.dobon.dev
+        - uptime.v.dobon.dev
+        - prometheus.v.dobon.dev
+        - syncthing.v.dobon.dev
+        - baikal.v.dobon.dev
+        - wireguard.v.dobon.dev
+      policy: two_factor
+      subject:
+        - ["group:vpn"]
+
+regulation:
+  max_retries: 3
+  find_time: 120
+  ban_time: 300
+
+password_policy:
+  standard:
+    enabled: true
+    min_length: 8
+    max_length: 0
+    require_uppercase: true
+    require_lowercase: true
+    require_number: true
+    require_special: true
+
+identity_providers:
+  oidc:
+    jwks:
+      - key: {{ secret "/run/secrets/authelia_identity_providers_oidc_jwks_key" | mindent 10 "|" | msquote }}
+    clients:
+      - client_id: grafana
+        client_name: Grafana
+        client_secret: $pbkdf2-sha512$310000$zUiQTPTf9iKjixF/CZ3b5g$nkIyyUlH9G23G35LHuSdB.Fc/J9Wx2muvhdSC/JNF8dTaDPHuIHw7PSxTBbOkTlLoHIQkLwZEbMk/eV84OOe7Q
+        public: false
+        authorization_policy: two_factor
+        redirect_uris:
+          - https://grafana.v.dobon.dev/login/generic_oauth
+        scopes:
+          - openid
+          - profile
+          - groups
+          - email
+      - client_id: vikunja
+        client_name: Vikunja
+        client_secret: $pbkdf2-sha512$310000$EYTI9AoF38adQqdbWAbjww$tqqXeBRF3nZRzcKAUv/1KVcYCkMothPz6u/MUHSW.JumrpRkXdoq2u0y00J1hvkwYf1MZZNpEBHnJRXeKmn2eA
+        redirect_uris:
+          - https://vikunja.v.dobon.dev/auth/openid/authelia
+        scopes:
+          - openid
+          - email
+          - profile

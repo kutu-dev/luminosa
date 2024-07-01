@@ -1,0 +1,47 @@
+services:
+  traefik:
+    image: traefik
+    container_name: traefik
+    restart: unless-stopped
+
+    # Needs to be root user to access the Docker socket
+    user: "root:root"
+
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./traefik.toml:/etc/traefik/traefik.toml:ro
+      - /srv/sync/traefik/acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://authelia.dobon.dev/
+      - traefik.http.middlewares.authelia.forwardauth.trustforwardheader=true
+      - traefik.http.middlewares.authelia.forwardauth.authresponseheaders=Remote-User, Remote-Groups
+
+      - traefik.http.routers.traefik.rule=Host("traefik.v.dobon.dev")
+      - traefik.http.routers.traefik.service=api@internal
+
+      #- traefik.http.routers.traefik.middlewares=authelia
+    environment:
+      - PORKBUN_API_KEY_FILE=/run/secrets/porkbun_api_key
+      - PORKBUN_SECRET_API_KEY_FILE=/run/secrets/porkbun_secret_api_key
+
+    secrets:
+      - porkbun_api_key
+      - porkbun_secret_api_key
+
+secrets:
+  porkbun_api_key:
+    file: ./secrets/porkbun_api_key.txt
+  porkbun_secret_api_key:
+    file: ./secrets/porkbun_secret_api_key.txt
+
+networks:
+  shared:
+    name: shared
+    external: true

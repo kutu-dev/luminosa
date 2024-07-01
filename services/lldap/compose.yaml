@@ -1,0 +1,65 @@
+services:
+  lldap:
+    # Tag needed to make the Docker compose `user` not crash the container
+    image: lldap/lldap:latest-alpine-rootless
+    container_name: lldap
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    expose:
+      - 3890
+      - 17170
+    volumes:
+      - /srv/sync/lldap/data:/data
+      - /srv/services/lldap/lldap_config.toml:/data/lldap_config.toml:ro
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.services.lldap.loadbalancer.server.port=17170
+      - traefik.http.routers.lldap.rule=Host("lldap.v.dobon.dev")
+    environment:
+      - UID=${LUMINOSA_UID}
+      - GID=${LUMINOSA_GID}
+      - TZ=Europe/Madrid
+      - LLDAP_JWT_SECRET_FILE=/run/secrets/lldap_jwt_secret
+      - LLDAP_LDAP_USER_PASS_FILE=/run/secrets/lldap_ldap_user_pass
+      - LLDAP_LDAP_BASE_DN=dc=dobon,dc=dev
+      - LLDAP_DATABASE_URL=postgres://lldap:${POSTGRES_PASSWORD}@lldap-postgres/ldap-db
+      - LLDAP_HTTP_URL=https://lldap.dobon.dev
+    secrets:
+      - lldap_jwt_secret
+      - lldap_ldap_user_pass
+    depends_on:
+      - lldap-postgres
+
+  lldap-postgres:
+    image: postgres
+    container_name: lldap-postgres
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    expose:
+      - 5432
+    volumes:
+      - /srv/sync/lldap/postgres:/var/lib/postgresql/data
+    networks:
+      - shared
+    environment:
+      - POSTGRES_USER=lldap
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=ldap-db
+
+secrets:
+  lldap_jwt_secret:
+    file: ./secrets/lldap_jwt_secret.txt
+  lldap_ldap_user_pass:
+    file: ./secrets/lldap_ldap_user_pass.txt
+
+networks:
+  shared:
+    name: shared
+    external: true

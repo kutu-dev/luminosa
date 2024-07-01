@@ -1,0 +1,98 @@
+title: "Geofront"
+subtitle: "Public"
+
+header: false
+footer: "<p>Powered by a cheap laptop and lots of dreams</p>"
+
+stylesheet:
+  - "assets/custom.css"
+
+columns: "3"
+theme: default
+colors:
+  light:
+    highlight-primary: "#fff5f2"
+    highlight-secondary: "#fff5f2"
+    highlight-hover: "#bebebe"
+    background: "#12152B"
+    card-background: "rgba(255, 245, 242, 0.8)"
+    text: "#ffffff"
+    text-header: "#fafafa"
+    text-title: "#000000"
+    text-subtitle: "#111111"
+    card-shadow: rgba(0, 0, 0, 0.5)
+    link: "#3273dc"
+    link-hover: "#2e4053"
+    background-image: "../assets/wallpaper-light.jpeg"
+  dark:
+    highlight-primary: "#181C3A"
+    highlight-secondary: "#181C3A"
+    highlight-hover: "#1F2347"
+    background: "#12152B"
+    card-background: "rgba(24, 28, 58, 0.8)"
+    text: "#eaeaea"
+    text-header: "#7C71DD"
+    text-title: "#fafafa"
+    text-subtitle: "#8B8D9C"
+    card-shadow: rgba(0, 0, 0, 0.5)
+    link: "#c1c1c1"
+    link-hover: "#fafafa"
+    background-image: "../assets/wallpaper.jpeg"
+
+services:
+  - name: "//Media"
+    icon: "fas fa-image"
+    items:
+      - name: "Jellyfin"
+        logo: "assets/tools/jellyfin.svg"
+        subtitle: "Movies and shows center"
+        tag: "verified"
+        tagstyle: "is-info" # This will display the is-primary color! Try changing it to; is-link, is-info, is-success, is-warning or is-danger!
+        url: "https://jellyfin.dobon.dev"
+        target: "_blank"
+
+      - name: "Navidrome"
+        logo: "assets/tools/navidrome.svg"
+        subtitle: "Music streaming center"
+        tag: "verified"
+        tagstyle: "is-info"
+        url: "https://navidrome.dobon.dev"
+        target: "_blank"
+
+      - name: "Cobalt"
+        logo: "assets/tools/cobalt.png"
+        subtitle: "Universal media downloader"
+        tag: "guest"
+        tagstyle: "is-primary"
+        url: "https://cobalt.dobon.dev"
+        target: "_blank"
+
+  - name: "//Sharing"
+    icon: "fas fa-link"
+    items:
+      - name: "Snapdrop"
+        logo: "assets/tools/snapdrop.svg"
+        subtitle: "P2P local file sharing"
+        tag: "guest"
+        tagstyle: "is-primary"
+        url: "https://snapdrop.dobon.dev"
+        target: "_blank"
+
+  - name: "//Network"
+    icon: "fas fa-network-wired"
+    items:
+      - name: "Authelia"
+        logo: "assets/tools/authelia.svg"
+        subtitle: "Login into the system"
+        tag: "verified"
+        tagstyle: "is-info"
+        url: "https://authelia.dobon.dev"
+        target: "_blank"
+
+      - name: "Status Page"
+        logo: "assets/tools/uptime-kuma.svg"
+        subtitle: "Uptime Kuma monitoring page"
+        tag: "guest"
+        tagstyle: "is-primary"
+        url: "https://status.dobon.dev"
+        target: "_blank"

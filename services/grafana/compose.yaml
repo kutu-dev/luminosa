@@ -1,0 +1,105 @@
+version: "3"
+
+services:
+  grafana:
+    image: grafana/grafana-oss
+    restart: unless-stopped
+    user: "0"
+    expose:
+      - 3001
+    volumes:
+      - ./grafana-config:/etc/grafana
+      - /srv/sync/grafana/data:/var/lib/grafana
+      - /srv/sync/grafana/logs:/var/log/grafana
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.grafana.rule=Host("grafana.v.dobon.dev")
+
+      - traefik.http.routers.grafana.tls=true
+      - traefik.http.routers.grafana.tls.certresolver=le
+      - traefik.http.routers.grafana.tls.domains[0].main=v.dobon.dev
+      - traefik.http.routers.grafana.tls.domains[0].sans=*.v.dobon.dev
+    depends_on:
+      - prometheus
+
+  prometheus:
+    image: prom/prometheus
+    restart: unless-stopped
+    user: "0"
+    expose:
+      - 9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - /srv/sync/prometheus:/prometheus
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.prometheus.rule=Host("prometheus.v.dobon.dev")
+
+      - traefik.http.routers.prometheus.tls=true
+      - traefik.http.routers.prometheus.tls.certresolver=le
+      - traefik.http.routers.prometheus.tls.domains[0].main=v.dobon.dev
+      - traefik.http.routers.prometheus.tls.domains[0].sans=*.v.dobon.dev
+
+      - traefik.http.routers.prometheus.middlewares=authelia
+    depends_on:
+      - cadvisor
+      - node-exporter
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    command:
+      - "-docker_only=true"
+      - "-housekeeping_interval=15s"
+      - "-disable_metrics=disk,memory_numa,tcp,udp,percpu,sched,process,hugetlb,referenced_memory,resctrl,advtcp,memory_numa,accelerator"
+      - "--store_container_labels=false"
+    restart: unless-stopped
+    userns_mode: host
+    privileged: true
+    expose:
+      - 8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - shared
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter
+    command:
+      - "--path.rootfs=/host"
+      - "--collector.textfile.directory=/textfile"
+    user: "0"
+    expose:
+      - 9100
+    volumes:
+      - /:/host:ro,rslave
+      - /etc/hostname:/etc/nodename
+      - /srv/sync/node-exporter:/textfile:ro
+    networks:
+      - shared
+
+  grafana-to-ntfy:
+    image: kittyandrew/grafana-to-ntfy
+    user: "1"
+    expose:
+      - 8080
+    networks:
+      - shared
+    environment:
+      - NTFY_URL=https://ntfy.v.dobon.dev/grafana
+      - NTFY_BAUTH_USER=${NTFY_BAUTH_USER}
+      - NTFY_BAUTH_PASS=${NTFY_BAUTH_PASS}
+      - BAUTH_USER=${BAUTH_USER}
+      - BAUTH_PASS=${BAUTH_PASS}
+
+networks:
+  shared:
+    name: shared
+    external: true

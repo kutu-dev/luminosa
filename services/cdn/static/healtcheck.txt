@@ -1,0 +1,1 @@
+"If you have successfully reached this file it means that Nginx is running and serving files correctly" - Kutu

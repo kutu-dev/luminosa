@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma
+    restart: unless-stopped
+    userns_mode: host
+    expose:
+      - 3001
+    volumes:
+      - /srv/sync/uptime-kuma:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.uptime-kuma-private.rule=Host("uptime.v.dobon.dev")
+
+      - traefik.http.routers.uptime-kuma-private.tls=true
+      - traefik.http.routers.uptime-kuma-private.tls.certresolver=le
+      - traefik.http.routers.uptime-kuma-private.tls.domains[0].main=v.dobon.dev
+      - traefik.http.routers.uptime-kuma-private.tls.domains[0].sans=*.v.dobon.dev
+
+      - traefik.http.routers.uptime-kuma-private.middlewares=authelia
+
+      - traefik.http.routers.uptime-kuma-public.rule=(Host("status.dobon.dev") && Path("/")) || (Host("status.dobon.dev") && PathPrefix("/assets")) || (Host("status.dobon.dev") && PathPrefix("/api")) || (Host("status.dobon.dev") && PathPrefix("/upload"))
+
+      - traefik.http.routers.uptime-kuma-public.tls=true
+      - traefik.http.routers.uptime-kuma-public.tls.certresolver=le
+      - traefik.http.routers.uptime-kuma-public.tls.domains[0].main=dobon.dev
+      - traefik.http.routers.uptime-kuma-public.tls.domains[0].sans=*.dobon.dev
+
+networks:
+  shared:
+    name: shared
+    external: true

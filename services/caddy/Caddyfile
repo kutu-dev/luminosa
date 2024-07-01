@@ -1,0 +1,45 @@
+{
+	acme_dns porkbun {
+		api_key {env.PORKBUN_API_KEY}
+		api_secret_key {env.PORKBUN_API_SECRET_KEY}
+	}
+}
+
+(trusted_proxy_list) {
+       trusted_proxies 172.19.0.0/16
+}
+
+home.dobon.dev {
+	reverse_proxy homer:8080
+}
+
+authelia.dobon.dev {
+	reverse_proxy authelia:9091 {
+		import trusted_proxy_list
+	}
+}
+
+# TODO: Protect
+baikal.v.dobon.dev {
+	reverse_proxy baikal:80
+}
+
+wireguard.v.dobon.dev {
+	forward_auth authelia:9091 {
+                uri /api/authz/forward-auth
+                uri /api/authz/forward-auth?authelia_url=https://authelia.dobon.dev
+
+                copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+
+                import trusted_proxy_list
+        }
+
+	reverse_proxy wg-easy:51821 {
+		import trusted_proxy_list
+	}
+}
+
+# TODO: Protect
+lldap.v.dobon.dev {
+	reverse_proxy lldap:17170
+}

@@ -1,0 +1,7 @@
+remote
+sync
+.Trash-1000
+.vscode
+secrets/
+.env
+._*

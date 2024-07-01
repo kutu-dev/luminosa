@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  baikal:
+    image: ckulka/baikal
+    container_name: baikal
+    restart: unless-stopped
+    user: "0"
+    expose:
+      - 80
+    volumes:
+      - /srv/sync/baikal/config:/var/www/baikal/config
+      - /srv/sync/baikal/Specific:/var/www/baikal/Specific
+    networks:
+      - shared
+
+    depends_on:
+      - baikal-mariadb
+
+  baikal-mariadb:
+    image: mariadb
+    container_name: baikal-mariadb
+    restart: unless-stopped
+    user: "0"
+    expose:
+      - 3306
+    volumes:
+      - /srv/sync/baikal/database:/var/lib/mysql
+    networks:
+      - shared
+    environment:
+      - MARIADB_DATABASE=webdav
+      - MARIADB_USER=baikal
+      - MARIADB_PASSWORD_FILE=/run/secrets/mariadb_password
+      - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/mariadb_root_password
+    secrets:
+      - mariadb_password
+      - mariadb_root_password
+
+networks:
+  shared:
+    name: shared
+    external: true
+
+secrets:
+  mariadb_password:
+    file: ./secrets/mariadb_password.txt
+  mariadb_root_password:
+    file: ./secrets/mariadb_root_password.txt
