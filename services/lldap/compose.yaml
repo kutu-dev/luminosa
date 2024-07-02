@@ -20,6 +20,8 @@ services:
 
       - traefik.http.services.lldap.loadbalancer.server.port=17170
       - traefik.http.routers.lldap.rule=Host("lldap.v.dobon.dev")
+
+      - traefik.http.routers.lldap.middlewares=authelia
     environment:
       - UID=${LUMINOSA_UID}
       - GID=${LUMINOSA_GID}

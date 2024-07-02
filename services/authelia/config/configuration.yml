@@ -49,13 +49,7 @@ access_control:
 
     - domain:
         - traefik.v.dobon.dev
-        - pihole.v.dobon.dev
         - lldap.v.dobon.dev
-        - uptime.v.dobon.dev
-        - prometheus.v.dobon.dev
-        - syncthing.v.dobon.dev
-        - baikal.v.dobon.dev
-        - wireguard.v.dobon.dev
       policy: two_factor
       subject:
         - ["group:vpn"]

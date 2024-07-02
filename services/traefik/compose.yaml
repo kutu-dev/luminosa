@@ -26,7 +26,7 @@ services:
       - traefik.http.routers.traefik.rule=Host("traefik.v.dobon.dev")
       - traefik.http.routers.traefik.service=api@internal
 
-      #- traefik.http.routers.traefik.middlewares=authelia
+      - traefik.http.routers.traefik.middlewares=authelia
     environment:
       - PORKBUN_API_KEY_FILE=/run/secrets/porkbun_api_key
       - PORKBUN_SECRET_API_KEY_FILE=/run/secrets/porkbun_secret_api_key

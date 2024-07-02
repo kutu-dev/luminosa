@@ -1,0 +1,25 @@
+services:
+  static:
+    image: nginxinc/nginx-unprivileged  
+    container_name: static
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    expose:
+      - 8080
+
+    volumes:
+      - ./content/:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.static.rule=Host("static.dobon.dev")
+
+networks:
+  shared:
+    name: shared
+    external: true
