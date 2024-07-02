@@ -17,4 +17,4 @@
     - For Uptime Kuma.
     - Threshold with Grafana.
 - Make `README.md` pretty.
-- Explore RSS and Discord bot notifications (maybe integrating it with ntfy.sh.
+- Explore RSS and Discord bot notifications (maybe integrating it with ntfy.sh).
