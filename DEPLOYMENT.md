@@ -21,7 +21,11 @@ sudo docker network create shared
 ```
 
 ### `lldap` configurations
-Before be able to use the SSO provided by Authelia the following steps need to be followed inside the `lldap` Web UI, to access it withouta working Authelia setup its middleware should be remove temporally, you can do that by removing its corresponding label beforehand in its Docker Compose file located at [`services/lldap/compose.yaml`](./services/lldap/compose.yaml):
+Before be able to use the SSO provided by Authelia the following steps need to be followed inside the `lldap` Web UI, to access it withouta working Authelia setup its middleware should be remove temporally, you can do that by commenting out its corresponding label beforehand in its Docker Compose file located at [`services/lldap/compose.yaml`](./services/lldap/compose.yaml):
+
+> [!CAUTION]
+> Remember to add the middleware again to the `lldap` service after following this steps.
+
 - Login with user `admin` and the password set at the secret located at `services/lldap/secrets/lldap_ldap_user_pass.txt`.
 - Create a user `authelia` and set its password with the text inside the secret located at `services/authelia/secrets/authelia_authentication_backend_ldap_password.txt`.
 - Add the user `authelia` to the builtin group `lldap_password_manager`.
