@@ -1,0 +1,13 @@
+name = "Quicker Connect Button"
+filename = "quickerconnectbutton-fabric-2.2.1+1.21.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "ad6cfeb9186faf414c97dc9a7f613fe89f155e07"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 5496062
+project-id = 898092

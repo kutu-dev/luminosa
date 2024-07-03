@@ -1,7 +1,5 @@
 # TODO
 
-- Make documentation.
-- Spin up MC network.
 - Start baikal.
 - Make custom dashboard.
 - Add Uptime Kuma.
@@ -24,6 +22,7 @@
 - [x] lldap
 - [x] authelia
 - [x] static
+- [x] minecraft
 
 - [ ] baikal
 - [ ] caddy
@@ -32,7 +31,6 @@
 - [ ] homer
 - [ ] navidrome
 - [ ] ntfy
-- [ ] rei-network
 - [ ] snapdrop
 - [ ] syncthing
 - [ ] uptime-kuma

@@ -1,18 +1,28 @@
-version: "3"
-
 services:
   baikal:
     image: ckulka/baikal
     container_name: baikal
     restart: unless-stopped
-    user: "0"
+
+    # Never define a Docker COmpose `user` configuration as it will broke the container when updating,
+    # it will select by itself the user it needs
+
     expose:
       - 80
+
     volumes:
       - /srv/sync/baikal/config:/var/www/baikal/config
-      - /srv/sync/baikal/Specific:/var/www/baikal/Specific
+      - /srv/sync/baikal/specific:/var/www/baikal/Specific
     networks:
       - shared
+
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.baikal-homepage.rule=Host("baikal.v.dobon.dev")
+
+      - traefik.http.routers.baikal-admin.rule=Host("baikal.v.dobon.dev") && PathPrefix("/admin")
+      - traefik.http.routers.baikal-admin.middlewares=authelia
 
     depends_on:
       - baikal-mariadb
@@ -21,7 +31,9 @@ services:
     image: mariadb
     container_name: baikal-mariadb
     restart: unless-stopped
-    user: "0"
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
     expose:
       - 3306
     volumes:

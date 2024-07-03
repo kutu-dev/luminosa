@@ -1,0 +1,7 @@
+{
+  ip: "minecraft.dobon.dev",
+  port: 25565,
+  buttonLocation: "REPLACE_MULTIPLAYER_BUTTON",
+  text: "Enter to Alfheim",
+  resourcePackBehaviour: "ENABLED"
+}

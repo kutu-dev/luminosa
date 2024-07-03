@@ -1,0 +1,26 @@
+services:
+  alfheim:
+    image: itzg/minecraft-server
+    container_name: alfheim
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    # Needed to have colored outputs when using `rcon-cli` inside the container
+    tty: true
+
+    ports:
+      - 25565:25565
+
+    volumes:
+      - /srv/sync/minecraft/servers/alfheim:/data
+
+    environment:
+      - TYPE=FABRIC
+      - VERSION=1.21
+      - EULA=TRUE
+      - ONLINE_MODE=TRUE
+      - DIFFICULTY=hard
+      - RCON_PASSWORD=${RCON_PASSWORD}
+      - INIT_MEMORY=1G
+      - MAX_MEMORY=4G

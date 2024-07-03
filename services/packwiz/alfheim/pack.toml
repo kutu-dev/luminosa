@@ -1,0 +1,13 @@
+name = "Alfheim"
+author = "Kutu, DevilEPS & TheGamer1313"
+version = "1.0.0"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = "e53acf8fecef03ce2b79d5c4093895eddbeba76b92c08e48e762d7dfb1d1cd1b"
+
+[versions]
+fabric = "0.15.11"
+minecraft = "1.21"

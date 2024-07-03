@@ -1,5 +1,5 @@
 # Deployment Guide
-
+[](.md)
 ## External configurations
 The server machine should have the following ports forwarded:
 - `80` and `443`: Use by the `traefik` reverse proxy to access all the web based services.
@@ -13,6 +13,7 @@ There should be two A record entries for the domain (in this case `dobon.dev`), 
 When setting up the secrets check any file or directory that ends with `.example` and make a copy without it, then edit the files followinng the notes inside the angle brackets of each one. _Note:_ You will need two separate Porkbun API keys, that can be get [here](https://porkbun.com/account/api). 
 
 ## Imperative configurations
+
 It's expected to have the following environment variables set `LUMINOSA_UID` and `LUMINOSA_GID`, they will define the user and group that will be used inside the containers, **this user MUST NOT be part of the `docker` group or have any kind of access to the Docker socket**.
 
 Create a shared external Docker network like this:
@@ -32,3 +33,6 @@ Before be able to use the SSO provided by Authelia the following steps need to b
 - Create the group `vpn`.
 - Create the desired users...
 - Add any user that should have access to the services located at the private domain (`*.v.dobon.dev`) to the group `vpn`.
+
+### `baïkal` configurations
+Just follow the configuration wizard, then create a personal user with calendars and address books as needed.
