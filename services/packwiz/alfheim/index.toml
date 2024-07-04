@@ -169,11 +169,6 @@ hash = "dc1db56265cfd17b655ccb9b729c99025408c605cfc92ddeab53cd28eb1e1555"
 metafile = true
 
 [[files]]
-file = "mods/sodium-core-shader-support.pw.toml"
-hash = "6f86a365b68df802db11b0a96fc26bb56ff5ff355234f6409534ffcf54e17ba3"
-metafile = true
-
-[[files]]
 file = "mods/sodium.pw.toml"
 hash = "280cf7ad4ec95bd95eef81a7f327095c5f40e1b8aa45cea91284bfd19395d69e"
 metafile = true

@@ -43,22 +43,6 @@ services:
   - name: "//Media"
     icon: "fas fa-image"
     items:
-      - name: "Jellyfin"
-        logo: "assets/tools/jellyfin.svg"
-        subtitle: "Movies and shows center"
-        tag: "verified"
-        tagstyle: "is-info" # This will display the is-primary color! Try changing it to; is-link, is-info, is-success, is-warning or is-danger!
-        url: "https://jellyfin.dobon.dev"
-        target: "_blank"
-
-      - name: "Navidrome"
-        logo: "assets/tools/navidrome.svg"
-        subtitle: "Music streaming center"
-        tag: "verified"
-        tagstyle: "is-info"
-        url: "https://navidrome.dobon.dev"
-        target: "_blank"
-
       - name: "Cobalt"
         logo: "assets/tools/cobalt.png"
         subtitle: "Universal media downloader"
@@ -70,12 +54,12 @@ services:
   - name: "//Sharing"
     icon: "fas fa-link"
     items:
-      - name: "Snapdrop"
-        logo: "assets/tools/snapdrop.svg"
-        subtitle: "P2P local file sharing"
+      - name: "Pairdrop"
+        logo: "assets/tools/pairdrop.svg"
+        subtitle: "P2P file sharing"
         tag: "guest"
         tagstyle: "is-primary"
-        url: "https://snapdrop.dobon.dev"
+        url: "https://pairdrop.dobon.dev"
         target: "_blank"
 
   - name: "//Network"

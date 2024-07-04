@@ -3,13 +3,18 @@ services:
     image: b4bz/homer
     container_name: homer
     restart: unless-stopped
-    user: "1"
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
     expose:
       - 8080
     volumes:
       - ./assets/:/www/assets:ro
     networks:
       - shared
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.homer.rule=Host("home.dobon.dev")
 
 networks:
   shared:

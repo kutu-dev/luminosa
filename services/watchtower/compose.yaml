@@ -1,11 +1,12 @@
-version: "3"
-
 services:
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
     restart: unless-stopped
-    userns_mode: host
+
+    # Never define a Docker Compose `user` configuration as it will broke the container
+    # when it tries to manage its files
+
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:

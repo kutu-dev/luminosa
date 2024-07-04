@@ -163,7 +163,7 @@ attachment-file-size-limit: "30M"
 #web-push-public-key:
 #web-push-private-key:
 web-push-file: /var/cache/ntfy/webpush.db
-web-push-email-address: geofront@dobon.dev
+web-push-email-address: ntfy@dobon.dev
 # web-push-startup-queries:
 
 # If enabled, ntfy can perform voice calls via Twilio via the "X-Call" header.

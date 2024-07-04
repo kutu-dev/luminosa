@@ -1,0 +1,29 @@
+services:
+  pairdrop:
+    image: "lscr.io/linuxserver/pairdrop:latest"
+    container_name: pairdrop
+    restart: unless-stopped
+
+    volumes:
+      - ./rtc-config.json:/home/node/app/rtc-config.json
+
+    environment:
+      - UID=${LUMINOSA_UID}
+      - GID=${LUMINOSA_GID}
+      - WS_FALLBACK=false
+      - RTC_CONFIG=/home/node/app/rtc-config.json
+      - DEBUG_MODE=false
+      - TZ=Europe/Madrid
+
+    expose:
+      - 3000
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pairdrop.rule=Host("pairdrop.dobon.dev")
+
+networks:
+  shared:
+    name: shared
+    external: true

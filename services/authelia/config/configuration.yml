@@ -44,13 +44,11 @@ access_control:
   default_policy: deny
   rules:
     - domain:
-        - navidrome.dobon.dev
-      policy: two_factor
-
-    - domain:
         - traefik.v.dobon.dev
         - lldap.v.dobon.dev
         - baikal.v.dobon.dev
+        - uptime.v.dobon.dev
+        - syncthing.v.dobon.dev
       policy: two_factor
       subject:
         - ["group:vpn"]

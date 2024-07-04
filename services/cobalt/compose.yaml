@@ -1,12 +1,12 @@
-version: "3.5"
-
 services:
   cobalt-api:
-    image: ghcr.io/wukko/cobalt
+    image: ghcr.io/imputnet/cobalt
     restart: unless-stopped
-    user: "0"
-    ports:
-      - 127.0.0.1:9000:9000
+
+    # It needs root to manage its files as the image is not
+    # compatible with a rootless setup
+    user: "root:root"
+
     expose:
       - 9000
     networks:
@@ -14,36 +14,26 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.cobalt-api.rule=Host("cobalt.dobon.dev") && PathPrefix("/api")
-
-      - traefik.http.routers.cobalt-api.tls=true
-      - traefik.http.routers.cobalt-api.tls.certresolver=le
-      - traefik.http.routers.cobalt-api.tls.domains[0].main=dobon.dev
-      - traefik.http.routers.cobalt-api.tls.domains[0].sans=*.dobon.dev
     environment:
       - API_PORT=9000
       - API_URL=https://cobalt.dobon.dev/
-      - API_NAME=cobalt-geofront-api
+      - API_NAME=cobalt-luminosa-api
 
   cobalt-web:
-    image: ghcr.io/wukko/cobalt
+    image: ghcr.io/imputnet/cobalt
     restart: unless-stopped
-    user: "0"
-    ports:
-      - 127.0.0.1:9001:9001
+
+    # It needs root to manage its files as the image is not
+    # compatible with a rootless setup
+    user: "root:root"
+
     expose:
       - 9001
     networks:
       - shared
     labels:
       - traefik.enable=true
-      - traefik.http.services.cobalt-web.loadbalancer.server.port=9001
-
       - traefik.http.routers.cobalt-web.rule=Host("cobalt.dobon.dev")
-
-      - traefik.http.routers.cobalt-web.tls=true
-      - traefik.http.routers.cobalt-web.tls.certresolver=le
-      - traefik.http.routers.cobalt-web.tls.domains[0].main=dobon.dev
-      - traefik.http.routers.cobalt-web.tls.domains[0].sans=*.dobon.dev
     environment:
       - WEB_PORT=9001
       - WEB_URL=https://cobalt.dobon.dev/

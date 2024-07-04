@@ -4,7 +4,7 @@ services:
     container_name: baikal
     restart: unless-stopped
 
-    # Never define a Docker COmpose `user` configuration as it will broke the container when updating,
+    # Never define a Docker Compose `user` configuration as it will broke the container when updating,
     # it will select by itself the user it needs
 
     expose:
