@@ -23,4 +23,4 @@ services:
       - DIFFICULTY=hard
       - RCON_PASSWORD=${RCON_PASSWORD}
       - INIT_MEMORY=1G
-      - MAX_MEMORY=4G
+      - MAX_MEMORY=6G
