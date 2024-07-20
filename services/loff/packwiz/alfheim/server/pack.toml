@@ -1,0 +1,13 @@
+name = "Alfheim (Server Side)"
+author = "Kutu, DevilEPS & TheGamer1313"
+version = "1.0.0"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = "dc65b7068f4dd2bdef9bdd54f827a6343cee6f6dd52e6e73836b151315fd9388"
+
+[versions]
+fabric = "0.15.11"
+minecraft = "1.21"

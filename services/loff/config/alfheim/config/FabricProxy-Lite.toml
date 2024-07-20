@@ -1,0 +1,5 @@
+hackOnlineMode = true
+hackEarlySend = true
+hackMessageChain = true
+disconnectMessage = "Direct connections with the server are not allowed."
+secret = "${LOFF_FORWARDING_SECRET}"

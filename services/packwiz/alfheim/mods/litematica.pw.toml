@@ -1,7 +1,0 @@
-name = "Litematica (sakura-ryoko fork)"
-filename = "litematica-fabric-1.21-0.18.999-sakura.12.jar"
-
-[download]
-url = "https://github.com/sakura-ryoko/litematica/releases/download/1.21-sakura.12/litematica-fabric-1.21-0.18.999-sakura.12.jar"
-hash-format = "sha256"
-hash = "8982dac18532a47db292c523b0e23f58c973755097e6003037a22f219afb29b8"

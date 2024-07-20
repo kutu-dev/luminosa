@@ -1,0 +1,7 @@
+name = "Syncmatica (sakura-ryoko fork)"
+filename = "syncmatica-sakura-ryoko-1.21-v4.jar"
+
+[download]
+url = "https://static.loff.dobon.dev/mods/syncmatica-sakura-ryoko-1.21-v4.jar"
+hash-format = "sha256"
+hash = "e4476ef99673b6f7ff39eff0561139ecd12ebd2f8414c546abf85dfb92f28970"

@@ -1,0 +1,7 @@
+name = "malilib (sakura-ryoko fork)"
+filename = "malilib-sakura-ryoko-1.21-v8.jar"
+
+[download]
+url = "https://static.loff.dobon.dev/mods/malilib-sakura-ryoko-1.21-v8.jar"
+hash-format = "sha256"
+hash = "4c035f9533c6c5b666bc276d8b85b928b831ba786b0a11d7fc9fcf06bb106df7"

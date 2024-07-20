@@ -1,0 +1,7 @@
+name = "Tweakeroo (sakura-ryoko fork)"
+filename = "tweakeroo-sakura-ryoko-1.21-v17.jar"
+
+[download]
+url = "https://static.loff.dobon.dev/mods/tweakeroo-sakura-ryoko-1.21-v17.jar"
+hash-format = "sha256"
+hash = "ee7735d0a650dd81300bc641f971fa9e2a5de1619d2435dbc82e889a527309a5"

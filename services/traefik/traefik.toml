@@ -14,7 +14,7 @@
 
       [[entryPoints.websecure.http.tls.domains]]
         main="dobon.dev"
-        sans="*.dobon.dev"
+        sans= [ "*.dobon.dev", "*.loff.dobon.dev" ]
 
 [certificatesResolvers.le.acme]
   email = "the.kutu.dev@gmail.com"

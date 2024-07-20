@@ -1,0 +1,40 @@
+services:
+  hub:
+    # A more recent Java version needed by the ViaVersion plugin
+    image: itzg/minecraft-server:java17-alpine
+    container_name: hub
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    # Needed to have colored outputs when using `rcon-cli` inside the container
+    tty: true
+
+    expose:
+      - 25565
+
+    networks:
+      - shared
+
+    volumes:
+      - ../config/hub:/config:ro
+      - /srv/sync/loff/servers/hub:/data
+
+    environment:
+      - TYPE=PAPER
+      - VERSION=1.13.2
+      - EULA=TRUE
+
+      - INIT_MEMORY=1G
+      - MAX_MEMORY=3G
+
+      # Allow incompatible Java version on Paper
+      - JVM_DD_OPTS=Paper.IgnoreJavaVersion=true
+
+      - COPY_CONFIG_DEST=/data
+      - REPLACE_ENV_VARIABLES=TRUE
+      - REPLACE_ENV_VARIABLE_PREFIX=LOFF_
+      - SYNC_SKIP_NEWER_IN_DESTINATION=FALSE
+
+      - LOFF_FORWARDING_SECRET=${FORWARDING_SECRET}
+      - LOFF_POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

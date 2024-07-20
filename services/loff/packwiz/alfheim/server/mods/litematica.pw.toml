@@ -1,0 +1,7 @@
+name = "Litematica (sakura-ryoko fork)"
+filename = "litematica-sakura-ryoko-1.21-v20.jar"
+
+[download]
+url = "https://static.loff.dobon.dev/mods/litematica-sakura-ryoko-1.21-v20.jar"
+hash-format = "sha256"
+hash = "2eed62f08e19af1913ee3b7627f39fc6ea7b3080a2f345d600c2f72a4b6c3a04"

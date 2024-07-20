@@ -1,0 +1,7 @@
+{
+  ip: "alfheim.sv.loff.dobon.dev",
+  port: 25565,
+  buttonLocation: "REPLACE_SINGLEPLAYER_BUTTON",
+  text: "Enter to Alfheim",
+  resourcePackBehaviour: "ENABLED"
+}

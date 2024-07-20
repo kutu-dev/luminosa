@@ -1,7 +1,0 @@
-name = "Syncmatica (sakura-ryoko fork)"
-filename = "syncmatica-fabric-1.21-0.3.12-sakura.4.jar"
-
-[download]
-url = "https://github.com/sakura-ryoko/syncmatica/releases/download/1.21-sakura.4/syncmatica-fabric-1.21-0.3.12-sakura.4.jar"
-hash-format = "sha256"
-hash = "e4476ef99673b6f7ff39eff0561139ecd12ebd2f8414c546abf85dfb92f28970"

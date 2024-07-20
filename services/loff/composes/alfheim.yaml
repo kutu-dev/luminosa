@@ -1,0 +1,81 @@
+services:
+  alfheim:
+    image: itzg/minecraft-server:java21-alpine
+    container_name: alfheim
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    # Needed to have colored outputs when using `rcon-cli` inside the container
+    tty: true
+
+    expose:
+      - 25565
+
+    networks:
+      - shared
+
+    volumes:
+      - ../config/alfheim:/config:ro
+      - /srv/sync/loff/servers/alfheim:/data
+
+    environment:
+      - TYPE=FABRIC
+      - VERSION=1.21
+      - EULA=TRUE
+
+      - INIT_MEMORY=1G
+      - MAX_MEMORY=6G
+
+      - PACKWIZ_URL=https://packwiz-alfheim-server.loff.dobon.dev/pack.toml
+
+      - COPY_CONFIG_DEST=/data
+      - REPLACE_ENV_VARIABLES=TRUE
+      - REPLACE_ENV_VARIABLE_PREFIX=LOFF_
+      - SYNC_SKIP_NEWER_IN_DESTINATION=FALSE
+
+      - LOFF_FORWARDING_SECRET=${FORWARDING_SECRET}
+      - LOFF_POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  packwiz-alfheim-client:
+    image: dalbitresb12/packwiz
+    container_name: packwiz-alfheim-client
+    restart: unless-stopped
+    command: serve
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    expose:
+      - 8080
+    volumes:
+      - ../packwiz/alfheim/client:/workspace
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.packwiz-alfheim-client.rule=Host("packwiz-alfheim-client.loff.dobon.dev")
+
+  packwiz-alfheim-server:
+    image: dalbitresb12/packwiz
+    container_name: packwiz-alfheim-server
+    restart: unless-stopped
+    command: serve
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    expose:
+      - 8080
+    volumes:
+      - ../packwiz/alfheim/server:/workspace
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.packwiz-alfheim-server.rule=Host("packwiz-alfheim-server.loff.dobon.dev")
+
+networks:
+  shared:
+    name: shared
+    external: true

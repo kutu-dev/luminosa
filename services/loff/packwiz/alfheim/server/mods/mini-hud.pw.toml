@@ -1,0 +1,7 @@
+name = "Mini HUD (sakura-ryoko fork)"
+filename = "minihud-sakura-ryoko-1.21-v9.jar"
+
+[download]
+url = "https://static.loff.dobon.dev/mods/minihud-sakura-ryoko-1.21-v9.jar"
+hash-format = "sha256"
+hash = "91972e6528470c5f6e7656fb66161b3aa5921a7b0fbf9b160747bb8367f3a55e"

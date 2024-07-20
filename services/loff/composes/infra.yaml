@@ -1,0 +1,101 @@
+services:
+  velocity-proxy:
+    image: itzg/bungeecord
+    container_name: velocity-proxy
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    ports:
+      - 25565:25577
+
+    networks:
+      - shared
+
+    volumes:
+      - ../config/velocity:/config:ro
+      - /srv/sync/loff/velocity:/server
+
+    environment:
+      - TYPE=VELOCITY
+
+      - INIT_MEMORY=512M
+      - MAX_MEMORY=3G
+
+      - REPLACE_ENV_VARIABLES=TRUE
+      - REPLACE_ENV_VARIABLE_PREFIX=LOFF_
+      - SYNC_SKIP_NEWER_IN_DESTINATION=FALSE
+
+      - LOFF_FORWARDING_SECRET=${FORWARDING_SECRET}
+      - LOFF_POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  static:
+    image: nginxinc/nginx-unprivileged  
+    container_name: loff-static
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    expose:
+      - 8080
+
+    volumes:
+      - ../static:/usr/share/nginx/html:ro
+      - ../config/static.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.loff-static.rule=Host("static.loff.dobon.dev")
+
+  luckperms-postgres:
+    image: postgres
+    container_name: luckperms-postgres
+    restart: unless-stopped
+
+    user: "${LUMINOSA_UID}:${LUMINOSA_GID}"
+
+    expose:
+      - 5432
+
+    networks:
+      - shared
+
+    volumes:
+      - /srv/sync/loff/luckperms-postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=luckperms
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=luckperms
+
+  docs:
+    container_name: loff-docs
+    image: polinux/mkdocs
+    restart: unless-stopped
+
+    # Never define a Docker Compose `user` configuration as it will broke the container when updating,
+    # it will select by itself the user it needs
+
+    volumes:
+      - ../docs:/mkdocs
+    networks:
+      - shared
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.loff-docs.rule=Host("docs.loff.dobon.dev")
+
+    expose:
+      - 8000
+
+    environment:
+      LIVE_RELOAD_SUPPORT: 'true'
+      ADD_MODULES: 'mkdocs-material'
+      FAST_MODE: 'true'
+      DOCS_DIRECTORY: '/mkdocs'
+
+networks:
+  shared:
+    name: shared
+    external: true
